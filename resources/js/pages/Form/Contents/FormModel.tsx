@@ -399,7 +399,7 @@ function FormModel() {
         setScanMsg((s) => ({ partno: null }));
 
         setIsOpenModal(false);
-        setTimeout(() => partnoScan.inputRef.current?.focus(), 100);
+        setTimeout(() => partnoInputRef.current?.focus(), 100);
     };
     return (
         <div>
@@ -787,12 +787,17 @@ function FormModel() {
                                         <button
                                             type="button"
                                             onClick={() =>
-                                                setIsCameraOpen(true)
+                                                setScanMode(
+                                                    effectiveMode === "camera"
+                                                        ? "keyboard"
+                                                        : "camera",
+                                                )
                                             }
-                                            className="mt-1.5 flex items-center justify-center gap-2 rounded-lg border border-blue-300 bg-blue-50 py-2 text-blue-600 hover:bg-blue-100"
+                                            className="text-xs text-blue-500 hover:underline"
                                         >
-                                            <CameraIcon className="h-4 w-4" />
-                                            สแกน Part No ด้วยกล้อง
+                                            {effectiveMode === "camera"
+                                                ? "สลับเป็นเครื่องยิง"
+                                                : "สลับเป็นกล้อง"}
                                         </button>
                                     </>
                                 )}
@@ -1066,6 +1071,15 @@ function FormModel() {
                     </table>
                 </div>
             </Modal>
+            <QrScannerModal
+                open={isCameraOpen}
+                title="สแกน Part No"
+                onClose={() => setIsCameraOpen(false)}
+                onDecoded={(text) => {
+                    // ✅ ใช้ commit() ตัวเดียวกับที่ onKeyDown เรียก
+                    partnoScan.commit(text);
+                }}
+            />
         </div>
     );
 }
