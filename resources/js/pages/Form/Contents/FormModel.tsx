@@ -79,7 +79,7 @@ function FormModel() {
     const [rawScan, setRawScan] = useState("");
 
     const storageUrl = (path: string | null) =>
-        path ? `/storage/${path}` : null;
+        path ? `/56_romchn/storage/${path}` : null;
 
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const { empno } = useUserSession();

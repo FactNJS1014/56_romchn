@@ -18,7 +18,7 @@ function TableDataForm() {
     const [isEditModalForm, setIsEditModalForm] = useState(false);
 
     const storageUrl = (path: string | null) =>
-        path ? `/storage/${path}` : null;
+        path ? `/56_romchn/storage/${path}` : null;
 
     const [previewImage, setPreviewImage] = useState<string | null>(null);
 

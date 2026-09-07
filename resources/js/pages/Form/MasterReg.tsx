@@ -85,7 +85,7 @@ export default function MasterReg() {
     const [url, setUrl] = useState<string>("/api/master-reg");
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const storageUrl = (path: string | null) =>
-        path ? `/storage/${path}` : null;
+        path ? `/56_romchn/storage/${path}` : null;
 
     const [editId, setEditId] = useState("");
 
