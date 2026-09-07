@@ -15,7 +15,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Modal from "@/components/UI/Modal";
 import { useState, useEffect, useRef } from "react";
-import axios from "axios";
+import axiosInstance from "@/lib/axios";
 import { useForm } from "@inertiajs/react";
 import { RomOperatorTypesInterface } from "@/types/RomOperatorTypesInterface";
 import dayjs, { nowDate, nowTime } from "@/lib/dayjs";
@@ -27,6 +27,7 @@ import { useScanInput } from "@/hooks/use-scan-input";
 import { parseScan } from "@/lib/barcode-parser";
 import { useDeviceType } from "@/hooks/use-device-type";
 import QrScannerModal from "@/components/QrScannerModal";
+import axios from "axios";
 
 const lineData = [
     { value: "SMT-1", label: "SMT-1" },
@@ -205,7 +206,7 @@ function FormModel() {
      */
     const fetchDataMasterROM = async () => {
         try {
-            const res = await axios.get(route("api.master-reg-all"));
+            const res = await axiosInstance.get(route("api.master-reg-all"));
             setMasterData(res.data);
         } catch (error) {
             console.log(error);
@@ -221,7 +222,7 @@ function FormModel() {
      */
     const fetchCustomer = async () => {
         try {
-            const res = await axios.get(route("api.cus"));
+            const res = await axiosInstance.get(route("api.cus"));
             setCustomerData(res.data);
         } catch (error) {
             console.log(error);
@@ -255,7 +256,9 @@ function FormModel() {
 
         if (cus) {
             try {
-                const res = await axios.get(route("api.find-work-order", cus));
+                const res = await axiosInstance.get(
+                    route("api.find-work-order", cus),
+                );
                 const list_won = res.data.map((item: any) => item.WON.trim());
                 console.log(list_won);
                 setWonData(list_won);
@@ -270,7 +273,7 @@ function FormModel() {
         setData("won", won);
         if (won) {
             try {
-                const res = await axios.get(
+                const res = await axiosInstance.get(
                     route("api.find-model-by-won", won),
                 );
                 res.data.map((item: any) => {

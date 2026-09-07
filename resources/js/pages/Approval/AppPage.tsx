@@ -15,7 +15,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Modal from "@/components/UI/Modal";
 import { useUserSession } from "@/hooks/use-user-session";
 import { openInfoDocument } from "../document/Document";
-import axios from "axios";
+import axiosInstance from "@/lib/axios";
 
 export default function AppPage() {
     const [alldata, setAlldata] = useState([]);
@@ -43,7 +43,9 @@ export default function AppPage() {
     const fetchUser = async (empId: string) => {
         console.log("Emp ID: ", empId);
         try {
-            const res = await axios.get(route("api.user-master-appr-settings"));
+            const res = await axiosInstance.get(
+                route("api.user-master-appr-settings"),
+            );
             const data = res.data.users_all.filter(
                 (item: any) => item.EmpID === empId,
             );

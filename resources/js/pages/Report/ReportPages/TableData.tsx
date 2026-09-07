@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "@/lib/axios";
 import DataTable, { useTableExport } from "react-data-table-component";
 import dayjs from "dayjs";
 import ExcelJS from "exceljs";
@@ -19,7 +19,7 @@ function TableData() {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get("/api/total-record");
+            const response = await axiosInstance.get("/api/total-record");
             // console.log(response.data);
             setTotalRecord(response.data);
         } catch (error) {
@@ -28,7 +28,9 @@ function TableData() {
     };
     const fetchUser = async () => {
         try {
-            const res = await axios.get(route("api.user-master-appr-settings"));
+            const res = await axiosInstance.get(
+                route("api.user-master-appr-settings"),
+            );
             setUserList(res.data.users_all);
         } catch (error) {
             console.error(error);

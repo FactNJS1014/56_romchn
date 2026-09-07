@@ -22,7 +22,7 @@ import {
 import dayjs, { nowDate, nowTime } from "@/lib/dayjs";
 import { Modal } from "@/components/UI/Modal";
 import type { MasterRegType } from "@/types/MasterRegInterface";
-import axios from "axios";
+import axiosInstance from "@/lib/axios";
 import { useUserSession } from "@/hooks/use-user-session";
 import SearchableSelect from "@/components/SearchableSelect";
 import Pagination from "@/components/Table/Pagination";
@@ -108,7 +108,7 @@ export default function MasterReg() {
      * useEffect สำหรับดึงข้อมูลลูกค้า
      */
     useEffect(() => {
-        axios.get(route("api.cus")).then((response) => {
+        axiosInstance.get(route("api.cus")).then((response) => {
             const list_cus = response.data;
             setCustomer(list_cus);
         });
@@ -122,17 +122,19 @@ export default function MasterReg() {
             console.log(value);
             setData("customer", String(value));
 
-            axios.get(route("api.find-model", value)).then((response) => {
-                const list_modelnm = response.data.map((item: any) =>
-                    item.MDLNM.trim(),
-                );
-                const list_modelcd = response.data.map((item: any) =>
-                    item.MDLCD.trim(),
-                );
-                // console.log(list_model);
-                setModelName(list_modelnm);
-                setModelCode(list_modelcd);
-            });
+            axiosInstance
+                .get(route("api.find-model", value))
+                .then((response) => {
+                    const list_modelnm = response.data.map((item: any) =>
+                        item.MDLNM.trim(),
+                    );
+                    const list_modelcd = response.data.map((item: any) =>
+                        item.MDLCD.trim(),
+                    );
+                    // console.log(list_model);
+                    setModelName(list_modelnm);
+                    setModelCode(list_modelcd);
+                });
         }
     };
 
@@ -194,17 +196,16 @@ export default function MasterReg() {
         async (targetUrl: string) => {
             setLoading(true);
             try {
-                const { data } = await axios.get<PaginatedResponse<MasterReg>>(
-                    targetUrl,
-                    {
-                        params: {
-                            search: search || undefined,
-                            sort,
-                            direction,
-                            per_page: perPage,
-                        },
+                const { data } = await axiosInstance.get<
+                    PaginatedResponse<MasterReg>
+                >(targetUrl, {
+                    params: {
+                        search: search || undefined,
+                        sort,
+                        direction,
+                        per_page: perPage,
                     },
-                );
+                });
                 setResponse(data);
             } finally {
                 setLoading(false);

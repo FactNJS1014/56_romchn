@@ -6,7 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import EditForm from "../UpdateForm/FormEdit";
-import axios from "axios";
+import axiosInstance from "@/lib/axios";
 
 function TableDataForm() {
     const [data, setData] = useState([]);
@@ -47,7 +47,7 @@ function TableDataForm() {
         console.log(item);
         const id = item.RHREC_ID;
         try {
-            const res = await axios.post(route("api.send-to-app"), {
+            const res = await axiosInstance.post(route("api.send-to-app"), {
                 id: id,
             });
             console.log(res.data);
